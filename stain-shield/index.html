@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StainShield | 白い服をシミから守るライフハックWebアプリ</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <!-- FontAwesome for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Background decorative blobs -->
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+
+  <header>
+    <div class="container header-container">
+      <div class="logo">
+        <i class="fa-solid fa-shield-halved logo-icon"></i>
+        <span>Stain<span class="highlight">Shield</span></span>
+      </div>
+      <div class="badge">VPC v1 Prototype</div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <h1>おろしたての<span class="gradient-text">白い服</span>を着た日の、<br>ミートソースの恐怖から解放されよう</h1>
+      <p class="subtitle">「StainShield」は、日常のシミリスクを診断し、万が一の応急処置をナビゲートするライフハックアプリ。さらに「絶対にシミにならない超撥水Tシャツ」の効果をWeb上で疑似体験できます。</p>
+    </section>
+
+    <!-- Main Grid Dashboard -->
+    <div class="dashboard-grid">
+      
+      <!-- Card 1: Risk Calculator -->
+      <div class="card card-calculator">
+        <div class="card-header">
+          <i class="fa-solid fa-calculator card-icon"></i>
+          <h2>シミリスク診断</h2>
+        </div>
+        <p class="card-desc">今日の服装とランチメニューから、シミを飛ばす危険度をシミュレートします。</p>
+        
+        <div class="form-group">
+          <label>今日の服装は？</label>
+          <div class="radio-tile-group">
+            <label class="radio-tile">
+              <input type="radio" name="clothing" value="white" checked>
+              <div class="tile-content">
+                <i class="fa-solid fa-shirt tile-icon text-white-shirt"></i>
+                <span>おろしたての白服</span>
+              </div>
+            </label>
+            <label class="radio-tile">
+              <input type="radio" name="clothing" value="other">
+              <div class="tile-content">
+                <i class="fa-solid fa-shirt tile-icon text-dark-shirt"></i>
+                <span>汚れてもいい服</span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="menu-select">食べる予定のメニューは？</label>
+          <div class="select-wrapper">
+            <select id="menu-select">
+              <option value="meat-sauce" data-risk="95" data-type="oil">ミートソーススパゲティ 🍝 (リスク: 極高)</option>
+              <option value="curry-udon" data-risk="90" data-type="oil">カレーうどん 🍜 (リスク: 極高)</option>
+              <option value="ramen" data-risk="75" data-type="mix">醤油ラーメン 🍜 (リスク: 高)</option>
+              <option value="coffee" data-risk="65" data-type="water">ホットコーヒー ☕ (リスク: 中)</option>
+              <option value="wine" data-risk="80" data-type="water">赤ワイン 🍷 (リスク: 高)</option>
+              <option value="salad" data-risk="15" data-type="safe">安全なシーザーサラダ 🥗 (リスク: 極低)</option>
+            </select>
+            <i class="fa-solid fa-chevron-down select-arrow"></i>
+          </div>
+        </div>
+
+        <button id="btn-diagnose" class="btn btn-primary">リスクを診断する</button>
+
+        <!-- Result Box (Hidden initially, shown via JS) -->
+        <div id="result-box" class="result-box hidden">
+          <div class="result-score-container">
+            <span class="result-label">シミ危険度</span>
+            <span id="result-score" class="result-score">95%</span>
+          </div>
+          <div class="progress-bar-bg">
+            <div id="result-progress" class="progress-bar-fill" style="width: 95%;"></div>
+          </div>
+          <p id="result-text" class="result-text">警告: 破滅的リスクです。白い服に赤いシミが点々と咲く未来が視えます。今すぐ超撥水Tシャツを着用してください！</p>
+        </div>
+      </div>
+
+      <!-- Card 2: Interactive Demo -->
+      <div class="card card-demo">
+        <div class="card-header">
+          <i class="fa-solid fa-wand-magic-sparkles card-icon"></i>
+          <h2>超撥水Tシャツ・シミュレーター</h2>
+        </div>
+        <p class="card-desc">「絶対にシミにならない超撥水ホワイトTシャツ」の効果を試そう！</p>
+
+        <div class="demo-controls">
+          <div class="toggle-container">
+            <span class="toggle-label">超撥水シールド</span>
+            <label class="switch">
+              <input type="checkbox" id="shield-toggle" checked>
+              <span class="slider round"></span>
+            </label>
+            <span id="shield-status" class="shield-status active">ON (撥水モード)</span>
+          </div>
+
+          <div class="sauce-selector">
+            <button class="sauce-btn active" data-sauce="tomato"><i class="fa-solid fa-droplet text-red"></i> ミートソース</button>
+            <button class="sauce-btn" data-sauce="coffee"><i class="fa-solid fa-droplet text-brown"></i> コーヒー</button>
+            <button class="sauce-btn" data-sauce="wine"><i class="fa-solid fa-droplet text-purple"></i> 赤ワイン</button>
+          </div>
+        </div>
+
+        <!-- Interactive Canvas Area -->
+        <div class="canvas-container">
+          <div class="shirt-wrapper">
+            <!-- T-Shirt SVG -->
+            <svg id="tshirt-svg" viewBox="0 0 100 100" class="tshirt-graphic">
+              <path d="M 30,12 C 38,18 62,18 70,12 L 85,25 C 88,28 85,32 80,31 L 75,30 L 75,85 C 75,88 72,90 68,90 L 32,90 C 28,90 25,88 25,85 L 25,30 L 20,31 C 15,32 12,28 15,25 Z" fill="#ffffff" stroke="#e0e0e0" stroke-width="1.5" />
+            </svg>
+            
+            <!-- Dynamic stain overlay -->
+            <div id="stain-overlay" class="stain-overlay"></div>
+            
+            <!-- Animated falling drop -->
+            <div id="liquid-drop" class="liquid-drop hidden"></div>
+          </div>
+          
+          <button id="btn-spill" class="btn btn-secondary"><i class="fa-solid fa-glass-water-droplet"></i> 汚れをこぼしてみる</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Section 3: Emergency Guide -->
+    <section class="guide-section">
+      <div class="guide-header">
+        <i class="fa-solid fa-kit-medical guide-icon"></i>
+        <h2>万が一こぼした時の「応急シミ抜き」ライフハック</h2>
+      </div>
+      <p class="guide-desc">超撥水Tシャツを着ていなかったあなたへ。外出先でシミを最小限に抑えるための緊急ナビゲーションです。</p>
+      
+      <div class="guide-tabs">
+        <button class="tab-btn active" data-tab="oil"><i class="fa-solid fa-pizza-slice"></i> 油性のシミ (ミートソース/カレー)</button>
+        <button class="tab-btn" data-tab="water"><i class="fa-solid fa-coffee"></i> 水性のシミ (コーヒー/赤ワイン)</button>
+        <button class="tab-btn" data-tab="mix"><i class="fa-solid fa-bowl-hot"></i> 混合性のシミ (ラーメン)</button>
+      </div>
+
+      <div class="guide-content-box">
+        <!-- Oil Stain Guide -->
+        <div id="guide-oil" class="guide-tab-content active">
+          <div class="steps-grid">
+            <div class="step-card">
+              <div class="step-num">1</div>
+              <h3>固形物を取り除く</h3>
+              <p>ティッシュや箸を使い、白い服にすり込まないよう、上にのっている具材をそっとつまみ取ります。</p>
+            </div>
+            <div class="step-card">
+              <div class="step-num">2</div>
+              <h3>乾いた紙で吸い取る</h3>
+              <p>裏側に乾いたティッシュをあて、上からもう1枚のティッシュでトントンと叩き、油分を裏の紙に移行させます。**絶対にこすらないこと！**</p>
+            </div>
+            <div class="step-card">
+              <div class="step-num">3</div>
+              <h3>ハンドソープを活用</h3>
+              <p>少量の水で湿らせたティッシュに、お店のトイレにあるハンドソープ（食器用洗剤があればベスト）を1滴なじませ、シミを叩きます。その後、水を含んだきれいなティッシュでソープを叩き出します。</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Water Stain Guide -->
+        <div id="guide-water" class="guide-tab-content">
+          <div class="steps-grid">
+            <div class="step-card">
+              <div class="step-num">1</div>
+              <h3>乾いた紙で押さえる</h3>
+              <p>水分が広がる前に、ティッシュやハンカチで上から優しく押さえ、できる限りの水分を吸収させます。</p>
+            </div>
+            <div class="step-card">
+              <div class="step-num">2</div>
+              <h3>濡れティッシュで叩く</h3>
+              <p>裏側に乾いたティッシュをあて、水で濡らしたティッシュで上からトントンと叩きます。水性のシミは水に溶けやすいため、これだけで大部分が裏側に抜けていきます。</p>
+            </div>
+            <div class="step-card">
+              <div class="step-num">3</div>
+              <h3>乾かす</h3>
+              <p>最後に乾いたティッシュで挟んで水分を吸い取ります。帰宅後はすぐに酸素系漂白剤をつけて洗濯機へ！</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mixed Stain Guide -->
+        <div id="guide-mix" class="guide-tab-content">
+          <div class="steps-grid">
+            <div class="step-card">
+              <div class="step-num">1</div>
+              <h3>スープを吸い取る</h3>
+              <p>ラーメンのスープは油分と水分が混ざっています。まずは乾いたティッシュで押さえ、表面の水分と油分を吸い取ります。</p>
+            </div>
+            <div class="step-card">
+              <div class="step-num">2</div>
+              <h3>ソープで油分を分解</h3>
+              <p>ハンドソープを少し含ませた濡れティッシュで叩き、ラーメンのスープに含まれる「動物性脂肪（油分）」を分解して浮かせます。</p>
+            </div>
+            <div class="step-card">
+              <div class="step-num">3</div>
+              <h3>水で洗い流して叩く</h3>
+              <p>水を含ませたティッシュで、ソープごと汚れを裏側の乾いたティッシュに叩き出します。輪ジミにならないよう、境界線をぼかすように叩くのがコツです。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Call to Action / Pitch -->
+    <section class="pitch-section">
+      <div class="pitch-content">
+        <h2>究極の解決策: 「超撥水ホワイトTシャツ」</h2>
+        <p>どんなに丁寧に応急処置をしても、外出先でのシミ抜きには限界があります。時間もかかり、せっかくの楽しい食事のムードも台無しに。StainShieldが提案する「超撥水ホワイトTシャツ」なら、ナノテクノロジーシールドにより液体を完全に球体化して弾くため、そもそもシミがつきません。イライラをゼロにする、これからの新しいライフスタイルです。</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-content">
+      <p>&copy; 2026 StainShield Project (yu_ta_103). Created with Antigravity AI.</p>
+    </div>
+  </footer>
+
+  <!-- Custom JavaScript -->
+  <script src="app.js"></script>
+</body>
+</html>
